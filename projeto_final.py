@@ -8,7 +8,7 @@ import pyarrow as pa
 table_full = []
 researches = ['brasil', 'brazil', 'brasil']
 countries = ['br', 'us', 'pt']
-apikey = "9c40fd592705f5408902457809ba3536"
+apikey = "" # Token GNews
 
 # Inicia a busca de noticias aplicando os filtros informados em 'researches' e 'countries'
 for item in range(len(countries)):
@@ -36,7 +36,7 @@ df_news = df_news[['title', 'source_name', 'url', 'publishedAt', 'country']]
 # Inicia a busca de analise de sentimentos
 list_sentiment = []
 url = "https://api.meaningcloud.com/sentiment-2.1"
-key = "a447bb05801aea31149c47b677b46a68"
+key = "" # Token do meaningcloud
 
 # Realiza a analise de sentimento de cada noticia
 for i in range(len(df_news)):
