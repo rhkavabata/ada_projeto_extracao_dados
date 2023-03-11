@@ -8,7 +8,7 @@ import pyarrow as pa
 table_full = []
 researches = ['brasil', 'brazil', 'brasil']
 countries = ['br', 'us', 'pt']
-apikey = "" # Token GNews
+apikey = "9c40fd592705f5408902457809ba3536"
 
 # Inicia a busca de noticias aplicando os filtros informados em 'researches' e 'countries'
 for item in range(len(countries)):
@@ -19,6 +19,10 @@ for item in range(len(countries)):
     apikey={apikey}"
 
     news = requests.get(url_news)
+    if news.status_code >= 500:
+    	time.sleep(10)
+    	news = requests.get(url_news)
+    
     table = json.loads(news.content)
 
     # Ajusta os dados criando a coluna 'source_name' com a fonte da noticia e 'country' com o pais
@@ -36,7 +40,7 @@ df_news = df_news[['title', 'source_name', 'url', 'publishedAt', 'country']]
 # Inicia a busca de analise de sentimentos
 list_sentiment = []
 url = "https://api.meaningcloud.com/sentiment-2.1"
-key = "" # Token do meaningcloud
+key = "a447bb05801aea31149c47b677b46a68"
 
 # Realiza a analise de sentimento de cada noticia
 for i in range(len(df_news)):
@@ -45,7 +49,12 @@ for i in range(len(df_news)):
         'txt': df_news['title'][i],
         'lang': 'pt',
     }
+    
     response = requests.post(url, data=payload)
+    if response.status_code >= 500:
+    	time.sleep(10)
+    	response = requests.post(url, data=payload)
+    
     sentiment = json.loads(response.content)
     list_sentiment = list_sentiment+([{'title': df_news['title'][i], 'sentiment': sentiment['score_tag']}])
     time.sleep(1) # Espera 1 segundo para não gerar erro na API que realiza duas consultas por segundo
